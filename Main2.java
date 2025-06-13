@@ -6,12 +6,12 @@ public class Main2 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // arraylists to the variables
+        // arraylists to hold service data
         ArrayList<String> serviceNames = new ArrayList<>();
         ArrayList<String> providers = new ArrayList<>();
         ArrayList<Double> prices = new ArrayList<>();
 
-        // this will store the index of services booked by the user
+        // cart stuff goes here
         ArrayList<String> cartServices = new ArrayList<>();
         ArrayList<String> cartProviders = new ArrayList<>();
         ArrayList<Double> cartPrices = new ArrayList<>();
@@ -19,7 +19,7 @@ public class Main2 {
         boolean running = true;
 
         while (running) {
-            // Displays main menu
+            // main menu is shown
             System.out.println("\n-- Local Service Marketplace --");
             System.out.println("1. Add a Service");
             System.out.println("2. View All Services");
@@ -27,12 +27,12 @@ public class Main2 {
             System.out.println("4. Exit");
             System.out.println("5. Remove a Service");
             System.out.println("6. Update Cart");
+            System.out.println("7. Checkout");
             System.out.print("Choose an option: ");
 
-            // makes sure scanner is valid
             if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a number from 1 to 6.");
-                scanner.nextLine();
+                System.out.println("Invalid input. Please enter a number from 1 to 7.");
+                scanner.nextLine(); // clear bad input
                 continue;
             }
 
@@ -40,7 +40,7 @@ public class Main2 {
             scanner.nextLine();
 
             if (choice == 1) {
-                // Add a new service to all three lists block
+                // user adds a new service
                 System.out.print("Enter a service name: ");
                 String name = scanner.nextLine();
 
@@ -49,7 +49,7 @@ public class Main2 {
 
                 System.out.print("Enter price: ");
                 if (!scanner.hasNextDouble()) {
-                    System.out.println("Invalid price. Please enter a number.");
+                    System.out.println("Invalid price. Try a number.");
                     scanner.nextLine();
                     continue;
                 }
@@ -61,33 +61,31 @@ public class Main2 {
                 providers.add(provider);
                 prices.add(price);
 
-                System.out.println("Service added");
+                System.out.println("Service added."); // success
 
             } else if (choice == 2) {
-                // Displays all available services
+                // shows services if there is any
                 if (serviceNames.isEmpty()) {
                     System.out.println("No services available.");
                 } else {
                     System.out.println("\nAvailable Services:");
                     for (int i = 0; i < serviceNames.size(); i++) {
-                        String info = (i + 1) + ". " + serviceNames.get(i)
+                        System.out.println((i + 1) + ". " + serviceNames.get(i)
                                 + " by " + providers.get(i)
-                                + " - $" + prices.get(i);
-                        System.out.println(info);
+                                + " - $" + prices.get(i));
                     }
                 }
 
             } else if (choice == 3) {
-                // book a service from the list block
+                // booking a service
                 if (serviceNames.isEmpty()) {
                     System.out.println("No services to book.");
                 } else {
                     System.out.println("\nAvailable Services:");
                     for (int i = 0; i < serviceNames.size(); i++) {
-                        String info = (i + 1) + ". " + serviceNames.get(i)
+                        System.out.println((i + 1) + ". " + serviceNames.get(i)
                                 + " by " + providers.get(i)
-                                + " - $" + prices.get(i);
-                        System.out.println(info);
+                                + " - $" + prices.get(i));
                     }
 
                     System.out.print("Enter the number of the service to book: ");
@@ -108,17 +106,16 @@ public class Main2 {
 
                         int index = selection - 1;
 
-                        // Add service to cart
+                        // add to cart
                         cartServices.add(serviceNames.get(index));
                         cartProviders.add(providers.get(index));
                         cartPrices.add(prices.get(index));
 
                         System.out.println("Booking confirmed for " + user + ": "
                                 + serviceNames.get(index) + " by "
-                                + providers.get(index) + " - $"
-                                + prices.get(index));
+                                + providers.get(index) + " - $" + prices.get(index));
 
-                        // remove it from available services
+                        // remove from list cuz its booked
                         serviceNames.remove(index);
                         providers.remove(index);
                         prices.remove(index);
@@ -126,11 +123,12 @@ public class Main2 {
                 }
 
             } else if (choice == 4) {
+                // quits the program
                 System.out.println("Thank you for using the marketplace.");
                 running = false;
 
             } else if (choice == 5) {
-                // remove a service from the list block
+                // removing services
                 if (serviceNames.isEmpty()) {
                     System.out.println("No services to remove.");
                 } else {
@@ -163,11 +161,10 @@ public class Main2 {
                 }
 
             } else if (choice == 6) {
-                // update services block
+                // change what’s in cart
                 if (cartServices.isEmpty()) {
                     System.out.println("Your cart is empty.");
                 } else {
-                    // Shows user current cart
                     System.out.println("\nYour Cart:");
                     for (int i = 0; i < cartServices.size(); i++) {
                         System.out.println((i + 1) + ". " + cartServices.get(i)
@@ -194,13 +191,8 @@ public class Main2 {
                         continue;
                     }
 
-                    int cartPosition = scanner.nextInt();
+                    int cartPos = scanner.nextInt();
                     scanner.nextLine();
-
-                    if (cartPosition < 1 || cartPosition > cartServices.size()) {
-                        System.out.println("Invalid cart position.");
-                        continue;
-                    }
 
                     System.out.print("Enter new service number to replace with: ");
                     if (!scanner.hasNextInt()) {
@@ -212,35 +204,71 @@ public class Main2 {
                     int newServiceIndex = scanner.nextInt();
                     scanner.nextLine();
 
-                    if (newServiceIndex < 1 || newServiceIndex > serviceNames.size()) {
-                        System.out.println("Invalid service selection.");
+                    if (cartPos < 1 || cartPos > cartServices.size()
+                            || newServiceIndex < 1 || newServiceIndex > serviceNames.size()) {
+                        System.out.println("Invalid selection.");
                         continue;
                     }
 
-                    // does the update
                     int serviceIndex = newServiceIndex - 1;
-                    cartServices.set(cartPosition - 1, serviceNames.get(serviceIndex));
-                    cartProviders.set(cartPosition - 1, providers.get(serviceIndex));
-                    cartPrices.set(cartPosition - 1, prices.get(serviceIndex));
 
-                    System.out.println("Cart updated successfully");
+                    // do the update
+                    cartServices.set(cartPos - 1, serviceNames.get(serviceIndex));
+                    cartProviders.set(cartPos - 1, providers.get(serviceIndex));
+                    cartPrices.set(cartPos - 1, prices.get(serviceIndex));
 
-                    // Removes the updated service from the list of availble services
+                    // remove from main list
                     serviceNames.remove(serviceIndex);
                     providers.remove(serviceIndex);
                     prices.remove(serviceIndex);
+
+                    System.out.println("Cart updated!");
 
                     System.out.println("\nUpdated Cart:");
                     for (int i = 0; i < cartServices.size(); i++) {
                         System.out.println((i + 1) + ". " + cartServices.get(i)
                                 + " by " + cartProviders.get(i)
-                               + " - $" + cartPrices.get(i));
+                                + " - $" + cartPrices.get(i));
                     }
                 }
+
+            } else if (choice == 7) {
+                // final checkout
+                if (cartServices.isEmpty()) {
+                    System.out.println("Your cart is empty. Book somthing first.");
+                } else {
+                    System.out.println("\n--- Invoice ---");
+                    double total = 0;
+
+                    for (int i = 0; i < cartServices.size(); i++) {
+                        System.out.println((i + 1) + ". " + cartServices.get(i)
+                                + " by " + cartProviders.get(i)
+                                + " - $" + cartPrices.get(i) + " per hour");
+                        total += cartPrices.get(i);
+                    }
+
+                    System.out.println("---------------------");
+                    System.out.printf("Total: $%.2f\n", total);
+
+                    // confirmation
+                    System.out.print("Confirm order (yes/no): ");
+                    String confirm = scanner.nextLine().toLowerCase();
+
+                    if (confirm.equals("yes")) {
+                        System.out.println("Order confirmed. Thank you for booking with us!");
+                        cartServices.clear();
+                        cartProviders.clear();
+                        cartPrices.clear();
+                    } else {
+                        System.out.println("Order canceled.");
+                    }
+                }
+
             } else {
-                System.out.println("Please select a valid option from 1 to 6.");
+                System.out.println("Please select a valid option from 1 to 7.");
             }
         }
-        scanner.close();
+
+        scanner.close(); // clean up scanner
     }
 }
