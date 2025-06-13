@@ -1,0 +1,5 @@
+This program is a local service marketplace I made in Java, for a computer science project. It lets users add services, view them, book them, update their bookings, remove services, and checkout with a final invoice/checkout message thingy. I used ArrayLists to keep track of everything, one list each for service names, providers, and prices. When a user books something, it gets moved into a cart, and its removed from the main service list so it cant be booked again.
+
+The program runs in a loop with a menu from option 1 to 7, and the user picks what they want to do. I added input checks so the program doesnt crash if someone types something wrong. You can also update your cart by swapping out a booked service for another one. The checkout shows all the services in the cart, their prices, and a total. once the user confirms it clears the cart and shows a thank you message.
+
+I built it step by step. First I did the menu and adding services, then booking, then I added cart updates and checkout. Its all in one class and uses Scanner for input. The program can be run in any Java IDE or terminal by compiling and running Main2.
